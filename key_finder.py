@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import librosa
 import numpy as np
 import os.path
@@ -11,7 +13,7 @@ for title in file_names:
     y, sr = librosa.load('songs/' + title)
     S = np.abs(librosa.stft(y)**2)
     chroma = librosa.feature.chroma_stft(S=S, sr=sr)
-
-    for j in range(len(chroma)):
-        print(sum(chroma[j]))
+    scale = ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"]
+    for j in range(12):
+        print(scale[j] + ": " + str(sum(chroma[j])))
     print ("Finished analysis of " + title + " at " + time.strftime('%I:%M:%S'))
