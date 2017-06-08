@@ -4,6 +4,7 @@ import librosa
 import numpy as np
 import os.path
 import time
+import csv
 
 
 def create_chromagram_sum(title):
@@ -14,29 +15,39 @@ def create_chromagram_sum(title):
     return [sum(x) for x in chroma]
 
 
-def display_top_three(chroma_sum, scale):
-    chroma_sorted = [x for x in chroma_sum]
-    chroma_sorted.sort()
+def get_scale_at_sum(scale, chroma_sums, value):
+    return scale[chroma_sums.index(value)]
+
+
+def display_top_three(chroma_sums, scale):
+    chroma_sorted = [x for x in chroma_sums]
+    chroma_sorted.sort(reverse=True)
     print("Top three keys are")
-    for k in [11, 10, 9]:
+    for k in range(3):
         top_sum = chroma_sorted[k]
-        print(scale[chroma_sum.index(top_sum)] + ": " + str(top_sum))
+        print(get_scale_at_sum(scale, chroma_sums, top_sum) + ": " + str(top_sum))
+    return chroma_sorted
 
 
 def analyze_songs():
     path = './songs'
     file_names = [f for f in os.listdir(path) if f != '.DS_Store' and f != '.gitkeep' and os.path.isfile(os.path.join(path, f))]
+    csvfile = open('song_chromas.csv', 'wb')
+    writer = csv.writer(csvfile, delimiter=",")
+    writer.writerow(["title", "top_keys", "chroma_sums"])
 
     for title in file_names:
         print ("Starting analysis of " + title + " at " + time.strftime('%I:%M:%S'))
 
-        chroma_sum = create_chromagram_sum(title)
+        chroma_sums = create_chromagram_sum(title)
         scale = ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"]
 
         for j in range(12):
-            print(scale[j] + ": " + str(chroma_sum[j]))
+            print(scale[j] + ": " + str(chroma_sums[j]))
 
-        display_top_three(chroma_sum, scale)
+        chroma_sorted = display_top_three(chroma_sums, scale)
+
+        writer.writerow([title, [get_scale_at_sum(scale, chroma_sums, chroma_sorted[x]) for x in range(3)], chroma_sums])
 
         print ("Finished analysis of " + title + " at " + time.strftime('%I:%M:%S'))
 
