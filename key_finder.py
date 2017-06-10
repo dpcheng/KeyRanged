@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import librosa
 import numpy as np
 import os.path
@@ -16,7 +14,8 @@ def create_chromagram_sum(title):
 
 
 def get_scale_at_sum(scale, chroma_sums, value):
-    return scale[chroma_sums.index(value)]
+    sum_index = chroma_sums.index(value)
+    return scale[sum_index]
 
 
 def sort_chroma_sums(chroma_sums, scale):
@@ -27,7 +26,7 @@ def sort_chroma_sums(chroma_sums, scale):
     for k in range(3):
         top_sum = chroma_sorted[k]
         print(get_scale_at_sum(scale, chroma_sums, top_sum) + ": " + str(top_sum))
-        
+
     return chroma_sorted
 
 
@@ -42,7 +41,7 @@ def analyze_songs():
         print ("Starting analysis of " + title + " at " + time.strftime('%I:%M:%S'))
 
         chroma_sums = create_chromagram_sum(title)
-        scale = ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"]
+        scale = ["C", u'C\u266f', "D", u'D\u266f', "E", "F", u'F\u266f', "G", u'G\u266f', "A", u'A\u266f', "B"]
 
         for j in range(12):
             print(scale[j] + ": " + str(chroma_sums[j]))
