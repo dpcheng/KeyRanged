@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import librosa
 import numpy as np
 import os.path
@@ -35,20 +37,21 @@ def analyze_songs():
     file_names = [f for f in os.listdir(path) if f != '.DS_Store' and f != '.gitkeep' and os.path.isfile(os.path.join(path, f))]
     csvfile = open('song_chromas.csv', 'wb')
     writer = csv.writer(csvfile, delimiter=",")
-    writer.writerow(["title", "top_keys", "chroma_sums"])
+    writer.writerow(["title", "first_key", "second_key", "third_key", "chroma_sums"])
 
     for title in file_names:
         print ("Starting analysis of " + title + " at " + time.strftime('%I:%M:%S'))
 
         chroma_sums = create_chromagram_sum(title)
-        scale = ["C", u'C\u266f', "D", u'D\u266f', "E", "F", u'F\u266f', "G", u'G\u266f', "A", u'A\u266f', "B"]
+        scale = ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"]
 
         for j in range(12):
             print(scale[j] + ": " + str(chroma_sums[j]))
 
         chroma_sorted = sort_chroma_sums(chroma_sums, scale)
+        top_keys = [get_scale_at_sum(scale, chroma_sums, chroma_sorted[x]) for x in range(3)]
 
-        writer.writerow([title, [get_scale_at_sum(scale, chroma_sums, chroma_sorted[x]) for x in range(3)], chroma_sums])
+        writer.writerow([title, top_keys[0], top_keys[1], top_keys[2] , chroma_sums])
 
         print ("Finished analysis of " + title + " at " + time.strftime('%I:%M:%S'))
 
