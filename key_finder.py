@@ -23,12 +23,6 @@ def get_scale_at_sum(scale, chroma_sums, value):
 def sort_chroma_sums(chroma_sums, scale):
     chroma_sorted = [x for x in chroma_sums]
     chroma_sorted.sort(reverse=True)
-
-    print("Top three keys are")
-    for k in range(3):
-        top_sum = chroma_sorted[k]
-        print(get_scale_at_sum(scale, chroma_sums, top_sum) + ": " + str(top_sum))
-
     return chroma_sorted
 
 
@@ -49,9 +43,11 @@ def analyze_songs():
             print(scale[j] + ": " + str(chroma_sums[j]))
 
         chroma_sorted = sort_chroma_sums(chroma_sums, scale)
-        top_keys = [get_scale_at_sum(scale, chroma_sums, chroma_sorted[x]) for x in range(3)]
 
-        writer.writerow([title, top_keys[0], top_keys[1], top_keys[2] , chroma_sums])
+        top_keys = [get_scale_at_sum(scale, chroma_sums, chroma_sorted[x]) for x in range(3)]
+        print("Top three keys are: " + top_keys[0] + ", " + top_keys[1] + ", " + top_keys[2])
+
+        writer.writerow([title, top_keys[0], top_keys[1], top_keys[2], chroma_sums])
 
         print ("Finished analysis of " + title + " at " + time.strftime('%I:%M:%S'))
 
