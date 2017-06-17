@@ -9,7 +9,7 @@ import csv
 
 def create_chromagram_sum(title):
     y, sr = librosa.load('songs/' + title)
-    S = np.abs(librosa.stft(y)**2)
+    S = np.abs(librosa.stft(y))
     chroma = librosa.feature.chroma_stft(S=S, sr=sr)
 
     return [sum(x) for x in chroma]
