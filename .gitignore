@@ -1,3 +1,4 @@
 songs/*
 !songs/.gitkeep
 song_chromas.csv
+song_frequencies.csv

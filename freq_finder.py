@@ -6,9 +6,11 @@ import csv
 
 
 def create_spectrogram(title):
-    y, sr = librosa.loa('songs/' + title)
+    y, sr = librosa.load('songs/' + title)
     S = np.abs(librosa.stft(y))
     comps, acts = librosa.decompose.decompose(S, n_components=8)
+    
+    return comps
 
 
 def analyze_songs():
@@ -22,3 +24,12 @@ def analyze_songs():
         print("Starting analysis of " + title + " at " + time.strftime('%I:%M:%S'))
 
         spectrogram = create_spectrogram(title)
+
+        print(title, spectrogram)
+
+        writer.writerow([title, [x for x in spectrogram]])
+
+        print("Finished analysis of " + title + " at " + time.strftime('%I:%M:%S'))
+
+
+analyze_songs()
