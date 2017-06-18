@@ -25,8 +25,6 @@ def analyze_songs():
 
         spectrogram = create_spectrogram(title)
 
-        print(title, spectrogram)
-
         writer.writerow([title, [x for x in spectrogram]])
 
         print("Finished analysis of " + title + " at " + time.strftime('%I:%M:%S'))
