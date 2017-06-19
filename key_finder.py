@@ -30,7 +30,7 @@ def analyze_songs():
     path = './songs'
     file_names = [f for f in os.listdir(path) if f != '.DS_Store' and f != '.gitkeep' and os.path.isfile(os.path.join(path, f))]
     csvfile = open('song_chromas.csv', 'wb')
-    writer = csv.writer(csvfile, delimiter=",")
+    writer = csv.writer(csvfile, delimiter=";")
     writer.writerow(["title", "first_key", "second_key", "third_key", "chroma_sums"])
 
     for title in file_names:
